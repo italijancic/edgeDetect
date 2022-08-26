@@ -29,4 +29,4 @@ def fitCircle(x1, y1, x2, y2, x3, y3) :
     k = -f
     r = round(np.sqrt(h ** 2 + k ** 2 - c), 5) #El radio es: r^2 = h^2 + k^2 - c
 
-    return [h,k,r]
+    return [h, k, r]
