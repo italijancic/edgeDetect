@@ -38,7 +38,7 @@ plt.show(block = False)
 
 # El ussuario selecciona los puntos de la img: los primeros dos definen la recta y el tercero el círculo
 xr, yr = getSelectedPoints(img)
-print('Selected Points: ({}, {}), ({}, {}),({}, {})'.format(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2]))
+print('\r\nSelected Points: ({}, {}), ({}, {}),({}, {})'.format(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2]))
 
 # Fit circle, using user selected points
 data_cir = fitCircle(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2])
@@ -47,7 +47,7 @@ xc, yc, r = data_cir
 
 # Horizontal line fit
 m, b = twoDotsLineFit(xr, yr)
-print('Aproximate horizontal line')
+print('\r\nAproximate horizontal line')
 print('y = {}x + {}'.format(m, b))
 # Calculate numerical values of estimated line
 xh = np.linspace(0, width, width)
@@ -63,7 +63,7 @@ p3 = findNearest(puntos_aux, [xr[2], yr[2]])
 p4 = findNearest(puntos_aux, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
 p5 = findNearest(puntos_aux, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
 
-print('Nearest points')
+print('\r\nNearest points')
 print('({}), ({}), ({}), ({}), ({})'.format(p1,p2,p3,p4,p5))
 e, coefs = fitElipse(p1, p2, p3, p4, p5)
 A, B, C, D, E, F = coefs
@@ -74,30 +74,34 @@ coef_pol_0 = b * b * C + b * E + F
 coef_pol_1 = b * B + D + 2 * b * C * m + E * m
 coef_pol_2 = A + B * m + C * m * m
 
-print("coef_pol_0", coef_pol_0)
+print("\r\ncoef_pol_0", coef_pol_0)
 print("coef_pol_1", coef_pol_1)
 print("coef_pol_2", coef_pol_2)
 
 # Intersección cónica - recta a partir del polinomio solución
-p = np.polynomial.Polynomial((coef_pol_0, coef_pol_1, coef_pol_2), domain = [0, width], window = [0, width])
-raices = p.roots()
+# p = np.polynomial.Polynomial((coef_pol_0, coef_pol_1, coef_pol_2), domain = [0, width], window = [0, width])
+# raicesOld = p.roots()
+raices = np.roots([coef_pol_2, coef_pol_1, coef_pol_0])
+print('\r\nraices = {}'.format(raices))
+# print('rootsOld = {}'.format(raicesOld))
+
+# Calculate y coordenate for roots
 raices_xy = np.array([[raices[0], m * raices[0] + b], [raices[1], m * raices[1] + b]])
 
+print('\r\nraices_xy = ', raices_xy)
+
 # Derivada en el punto de forma implicita
-der_1 = (- D - 2 * A * raices_xy[0, 0] - B * raices_xy[0, 1]) / (E + 2 * B * raices_xy[0, 0] + 2 * C * raices_xy[0, 1])
-der_2 = (- D - 2 * A * raices_xy[1, 0] - B * raices_xy[1, 1]) / (E + 2 * B * raices_xy[1, 0] + 2 * C * raices_xy[1, 1])
+m1 = (- D - 2 * A * raices_xy[0, 0] - B * raices_xy[0, 1]) / (E +  B * raices_xy[0, 0] + 2 * C * raices_xy[0, 1])
+m2 = (- D - 2 * A * raices_xy[1, 0] - B * raices_xy[1, 1]) / (E +  B * raices_xy[1, 0] + 2 * C * raices_xy[1, 1])
 
-der_1_str = str(np.arctan(der_1) * 180 / np.pi)
-der_2_str = str(np.arctan(der_2) * 180 / np.pi)
+# Pass from pendt to angle
+der_1_str = str(np.arctan(m1) * 180 / np.pi)
+der_2_str = str(np.arctan(m2) * 180 / np.pi)
+print("ThetaC: ", der_1_str, "[degree]")
+print("ThetaC: ", der_2_str, "[degree]")
 
-print("La derivada es: ", der_1_str)
-print("La derivada es: ", der_2_str)
-
-m1 = np.arctan(der_1)
-m2 = np.arctan(der_2)
-
-y_axis_1 = m1 * (xh - raices_xy[0, 0]) + raices_xy[0, 1]
-y_axis_2 = m2 * (yh - raices_xy[1, 0]) + raices_xy[1, 1]
+ytg1 = m1 * (xh - raices_xy[0, 0]) + raices_xy[0, 1]
+ytg2 = m2 * (xh - raices_xy[1, 0]) + raices_xy[1, 1]
 
 # Círculo, debe ir primero para graficar
 cv2.circle(img, (xc, yc) , int(r), (255, 0, 0), thickness = 1)
@@ -112,9 +116,9 @@ plt.scatter(xr,yr)
 #Recta
 plt.plot(xh, yh)
 # Recta tg 1
-plt.plot(xh, y_axis_1)
+plt.plot(xh, ytg1)
 # Recta tg 2
-plt.plot(xh, y_axis_2)
+plt.plot(xh, ytg2)
 
 # Neares Points
 plt.plot(p1[0], p1[1], '*r')
