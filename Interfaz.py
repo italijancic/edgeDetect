@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import matplotlib.pyplot as plt    
+import matplotlib.pyplot as plt
 from Funciones import *
 
 def open_file():
@@ -8,13 +8,13 @@ def open_file():
     file = filedialog.askopenfile(parent=root, mode='r', title="Selección de imagen", filetypes = [("Imagen", ".jpeg, .jpg")])
     if file:
         img = plt.imread(file.name) #https://stackoverflow.com/questions/24564889/opencv-python-not-opening-images-with-imread/60749818#60749818
-        if img is None: 
+        if img is None:
             messagebox.showerror(title="Ya casi", message= "Sigue intentando")
             browse_text.set("Cargar imagen")
-        else:    
-            Select_Points(img)
+        else:
+            getSelectedPoints(img)
             browse_text.set("Cargar imagen")
-            
+
 #Ventana
 root = tk.Tk()
 root.title("Medición Ángulo de Contacto")
@@ -23,7 +23,7 @@ root.maxsize(1980, 1080)
 root.minsize(360, 240)
 
 #Figura sobre la que dibujo
-canvas = tk.Canvas(root, width=360, height=240) 
+canvas = tk.Canvas(root, width=360, height=240)
 canvas.place(relx= 0, rely= 0, anchor= "center")
 
 #Instrucciones

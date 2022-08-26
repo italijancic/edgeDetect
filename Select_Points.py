@@ -7,13 +7,13 @@ img = cv2.imread('Prueba.jpg') #Almaceno la img original
 height, width = img.shape[:2] #Guardo las dimensiones de la img
 
 #https://www.iteramos.com/pregunta/18906/encontrar-el-valor-mas-cercano-en-el-array-de-numpy
-def Find_Nearest1(array, value): 
-    idx = np.array([np.linalg.norm(x + y) for (x, y) in abs(array - value)]).argmin() 
-    return array[idx] 
+def Find_Nearest1(array, value):
+    idx = np.array([np.linalg.norm(x + y) for (x, y) in abs(array - value)]).argmin()
+    return array[idx]
 
 #https://programmerclick.com/article/66431189170/
 def Select_Points1(img):
-     
+
     p_0 = np.random.randint(0, height, (3, 2))
     xr=[]; yr=[]
 
@@ -34,13 +34,13 @@ def Select_Points1(img):
     cv2.namedWindow("image")
     cv2.setMouseCallback("image", on_EVENT_LBUTTONDOWN)
 
-    while True:    
+    while True:
         cv2.imshow("image", img)
-        if cv2.waitKey(0)&0xFF==32: #Al apretar Espacio (32) se cierra la img
+        if (cv2.waitKey(0) & 0xFF == 32): #Al apretar Espacio (32) se cierra la img
             break
     cv2.destroyAllWindows()
 
-    return([xr,yr])
+    return ([xr, yr])
 
 Select_Points1(img)
 
@@ -70,11 +70,14 @@ def draw_circle(event,x,y,flags,param):
 img = np.zeros((512,512,3), np.uint8)
 cv2.namedWindow('image')
 cv2.setMouseCallback('image', draw_circle)
+
 while(1):
     cv2.imshow('image',img)
     k = cv2.waitKey(1) & 0xFF
+
     if k == ord('m'):
         mode = not mode
     elif k == 27:
         break
-cv2.destroyAllWindows() 
+
+cv2.destroyAllWindows()

@@ -38,7 +38,8 @@ plt.imshow(edges)
 indexs = np.asarray(np.where(edges != [0]))				# np.where(edges != 0) --> Return a tuple
 
 plt.figure()
-plt.plot(indexs[1,:], -(indexs[0,:]), '.b')
+plt.imshow(img)
+plt.plot(indexs[1,:], indexs[0,:], '.b')
 plt.title('Edge from np.array')
 
 if 'PYCONTROL_TEST_EXAMPLES' not in os.environ:
