@@ -41,6 +41,8 @@ indexs = np.asarray(np.where(edges != [0]))		# np.where(edges != 0) --> Return a
 plt.figure()
 # plt.plot(indexs[1,:], (indexs[0,:]), '.w')
 plt.imshow(edges)
+plt.imshow(img)
+plt.plot(indexs[1,:], indexs[0,:], '.b')
 plt.title('Edge from np.array')
 plt.plot(indexs[1,0:350], (indexs[0,0:350]), '.w')
 # plt.plot(indexs[1,:], indexs[0,:], '.w')
