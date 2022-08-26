@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import matplotlib.pyplot as plt
-from Funciones import *
+from catchPoints import *
 
 def open_file():
     browse_text.set("Esperando...")
