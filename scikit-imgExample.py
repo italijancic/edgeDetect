@@ -28,9 +28,9 @@ edges = filters.sobel(binary)
 #
 # Show image
 # ----------
-plt.figure()
-plt.title('edges filters.sobel')
-plt.imshow(edges)
+# plt.figure()
+# plt.title('edges filters.sobel')
+# plt.imshow(edges)
 
 # plt.figure()
 # plt.imshow(image, cmap=plt.cm.gray)
@@ -44,15 +44,14 @@ plt.imshow(edges)
 indexs = np.asarray(np.where(edges != [0]))
 
 # Plot edges coordinates
-plt.figure()
-plt.plot(indexs[1,:], (indexs[0,:]), '.b')
-plt.imshow(image, cmap=plt.cm.gray)
-plt.title('Detected Edge Coordinates')
+# plt.figure()
+# plt.plot(indexs[1,:], (indexs[0,:]), '.b')
+# plt.imshow(image, cmap=plt.cm.gray)
+# plt.title('Detected Edge Coordinates')
 
 plt.figure()
 plt.plot(indexs[1,:], (indexs[0,:]), '.r')
 plt.imshow(binary, cmap=plt.cm.gray)
-plt.title('Detected Edge Coordinates')
 
 if 'PYCONTROL_TEST_EXAMPLES' not in os.environ:
     plt.show()
