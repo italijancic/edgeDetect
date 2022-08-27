@@ -15,6 +15,8 @@ from filtersPoints import filterSelectedPoints
 
 # Load img from file
 img = cv2.imread('img/test.jpeg', 0)
+# img = cv2.imread('img/Angulo 160.jpg', 0)
+
 # img = cv2.imread('img/Prueba.jpg', 0)
 # Save img size (height, width)
 height, width = img.shape[:2]
@@ -79,26 +81,49 @@ print("coef_pol_1", coef_pol_1)
 print("coef_pol_2", coef_pol_2)
 
 # Intersección cónica - recta a partir del polinomio solución
-# p = np.polynomial.Polynomial((coef_pol_0, coef_pol_1, coef_pol_2), domain = [0, width], window = [0, width])
-# raicesOld = p.roots()
 raices = np.roots([coef_pol_2, coef_pol_1, coef_pol_0])
 print('\r\nraices = {}'.format(raices))
-# print('rootsOld = {}'.format(raicesOld))
 
 # Calculate y coordenate for roots
 raices_xy = np.array([[raices[0], m * raices[0] + b], [raices[1], m * raices[1] + b]])
-
-print('\r\nraices_xy = ', raices_xy)
 
 # Derivada en el punto de forma implicita
 m1 = (- D - 2 * A * raices_xy[0, 0] - B * raices_xy[0, 1]) / (E +  B * raices_xy[0, 0] + 2 * C * raices_xy[0, 1])
 m2 = (- D - 2 * A * raices_xy[1, 0] - B * raices_xy[1, 1]) / (E +  B * raices_xy[1, 0] + 2 * C * raices_xy[1, 1])
 
 # Pass from pendt to angle
-der_1_str = str(np.arctan(m1) * 180 / np.pi)
-der_2_str = str(np.arctan(m2) * 180 / np.pi)
-print("ThetaC: ", der_1_str, "[degree]")
-print("ThetaC: ", der_2_str, "[degree]")
+contactAngle1 = np.arctan(m1) * 180 / np.pi
+contactAngle2 = np.arctan(m2) * 180 / np.pi
+# Angle of horizontal line
+horizontalAngle = np.arctan(m) * 180 / np.pi
+
+print('\r\nResultados -> Prev If:')
+print('----------')
+print("ThetaC: ", contactAngle1, "[degree]")
+print("ThetaC: ", contactAngle2, "[degree]")
+print("Horizontal Anlge: ", horizontalAngle, "[degree]")
+
+# Compensar el angulo de la horizontal
+# Contemplar el pasaje de cuadrante
+if ( contactAngle1 > 0 ):
+    contactAngle1 = contactAngle1 - horizontalAngle
+else:
+    contactAngle1 = 180 + (contactAngle1 - horizontalAngle)
+
+if ( contactAngle2 > 0 ):
+    contactAngle2 = 180 - (contactAngle2 - horizontalAngle)
+else:
+    contactAngle2 = -(contactAngle2 - horizontalAngle)
+
+avgAngle = (abs(contactAngle1) + abs(contactAngle2))/2
+
+print('\r\nResultados:')
+print('----------')
+print("ThetaC: ", contactAngle1, "[degree]")
+print("ThetaC: ", contactAngle2, "[degree]")
+print("Avg Angle: ", avgAngle , "[degree]")
+print("Horizontal Anlge: ", horizontalAngle, "[degree]")
+
 
 ytg1 = m1 * (xh - raices_xy[0, 0]) + raices_xy[0, 1]
 ytg2 = m2 * (xh - raices_xy[1, 0]) + raices_xy[1, 1]
