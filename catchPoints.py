@@ -12,13 +12,13 @@ def getSelectedPoints(img):
             yr.append(y)
             # Draw point in screen
             cv2.circle(img, (x, y), 3, (255, 0, 0), thickness = -1)
-            cv2.imshow("Imagen", img)
+            cv2.imshow("Image", img)
 
-    cv2.namedWindow("Imagen")
-    cv2.setMouseCallback("Imagen", on_EVENT_LBUTTONDOWN)
+    cv2.namedWindow("Image")
+    cv2.setMouseCallback("Image", on_EVENT_LBUTTONDOWN)
 
     while True:
-        cv2.imshow("Imagen", img)
+        cv2.imshow("Image", img)
         # Wait space key (ASCII 32) to end proccess
         if ( cv2.waitKey(0) & 0xFF == 32 ):
             break
