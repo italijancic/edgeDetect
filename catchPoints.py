@@ -1,5 +1,3 @@
-from turtle import shape
-import numpy as np
 import cv2 as cv2
 
 def getSelectedPoints(img):
@@ -26,6 +24,4 @@ def getSelectedPoints(img):
             break
 
     cv2.destroyAllWindows()
-
     return xr, yr
-    # return ([xr, yr])
