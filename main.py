@@ -115,7 +115,7 @@ print('\r\nResults -> Prev If:')
 print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
-print("Horizontal Anlge: %.1f [degree]" % horizontalAngle)
+print("Horizontal Angle: %.1f [degree]" % horizontalAngle)
 
 # Compensate angle with horizontal line and fix quadrant change
 if ( contactAngle1 > 0 ):
@@ -136,7 +136,7 @@ print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
 print("Avg Angle: %.2f [degree]" % avgAngle)
-print("Horizontal Anlge: %.2f [degree]" %horizontalAngle)
+print("Horizontal Angle: %.2f [degree]" %horizontalAngle)
 
 ytg1 = m1 * (xh - raices_xy[0, 0]) + raices_xy[0, 1]
 ytg2 = m2 * (xh - raices_xy[1, 0]) + raices_xy[1, 1]
