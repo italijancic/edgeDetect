@@ -15,7 +15,7 @@ from filtersPoints import filterSelectedPoints
 
 # Load img from file
 # img = cv2.imread('img/test.jpeg', 0)
-img = cv2.imread('img/Angulo 40.jpg', 0)
+img = cv2.imread('img/Angulo 20.jpg', 0)
 # img = cv2.imread('img/Prueba.jpg', 0)
 
 # Save img size (height, width)
@@ -111,7 +111,7 @@ contactAngle2 = np.arctan(m2) * 180 / np.pi
 # Angle of horizontal line
 horizontalAngle = np.arctan(m) * 180 / np.pi
 
-print('\r\Results -> Prev If:')
+print('\r\nResults -> Prev If:')
 print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
@@ -131,7 +131,7 @@ else:
 # Calculate average angle
 avgAngle = (abs(contactAngle1) + abs(contactAngle2))/2
 
-print('\r\Results:')
+print('\r\nResults:')
 print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
