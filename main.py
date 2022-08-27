@@ -14,8 +14,8 @@ from filtersPoints import filterSelectedPoints
 #https://www.codespeedy.com/convert-rgb-to-binary-image-in-python/
 
 # Load img from file
-img = cv2.imread('img/test.jpeg', 0)
-# img = cv2.imread('img/Angulo 160.jpg', 0)
+# img = cv2.imread('img/test.jpeg', 0)
+img = cv2.imread('img/Angulo 40.jpg', 0)
 # img = cv2.imread('img/Prueba.jpg', 0)
 
 # Save img size (height, width)
@@ -39,6 +39,13 @@ plt.plot(edgePoints[:,0], edgePoints[:,1], '.w')
 plt.show(block = False)
 
 # El ussuario selecciona los puntos de la img: los primeros dos definen la recta y el tercero el círculo
+print('-----------------')
+print('\r\nUser instructions')
+print('-----------------')
+print('1). Must select 5 points.')
+print('2). First 2 points are used to fit horizontal line.')
+print('3). The rest three points are used, to fit a general conic to drop contour')
+print('4). At the end of selection proccess press <Space> key to continue.')
 xr, yr = getSelectedPoints(img)
 print('\r\nSelected Points: ({}, {}), ({}, {}),({}, {})'.format(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2]))
 
@@ -62,8 +69,10 @@ puntos_aux = filterSelectedPoints(edgePoints, xc, yc, r, m, b)
 p1 = findNearest(edgePoints, [xr[0], yr[0]])
 p2 = findNearest(edgePoints, [xr[1], yr[1]])
 p3 = findNearest(edgePoints, [xr[2], yr[2]])
-p4 = findNearest(edgePoints, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
-p5 = findNearest(edgePoints, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
+p4 = findNearest(edgePoints, [xr[3], yr[3]])
+p5 = findNearest(edgePoints, [xr[4], yr[4]])
+# p4 = findNearest(edgePoints, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
+# p5 = findNearest(edgePoints, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
 # p1 = findNearest(puntos_aux, [xr[0], yr[0]])
 # p2 = findNearest(puntos_aux, [xr[1], yr[1]])
 # p3 = findNearest(puntos_aux, [xr[2], yr[2]])
@@ -102,11 +111,11 @@ contactAngle2 = np.arctan(m2) * 180 / np.pi
 # Angle of horizontal line
 horizontalAngle = np.arctan(m) * 180 / np.pi
 
-print('\r\nResultados -> Prev If:')
+print('\r\Results -> Prev If:')
 print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
-print("Horizontal Anlge: %.2f [degree]" % horizontalAngle)
+print("Horizontal Anlge: %.1f [degree]" % horizontalAngle)
 
 # Compensate angle with horizontal line and fix quadrant change
 if ( contactAngle1 > 0 ):
@@ -122,7 +131,7 @@ else:
 # Calculate average angle
 avgAngle = (abs(contactAngle1) + abs(contactAngle2))/2
 
-print('\r\nResultados:')
+print('\r\Results:')
 print('----------')
 print("ThetaC: %.2f [degree]" % contactAngle1)
 print("ThetaC: %.2f [degree]" % contactAngle2)
