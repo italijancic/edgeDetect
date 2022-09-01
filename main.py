@@ -14,8 +14,8 @@ from filtersPoints import filterSelectedPoints
 #https://www.codespeedy.com/convert-rgb-to-binary-image-in-python/
 
 # Load img from file
-# img = cv2.imread('img/test.jpeg', 0)
-img = cv2.imread('img/Angulo 20.jpg', 0)
+img = cv2.imread('img/test.jpeg', 0)
+# img = cv2.imread('img/Angulo 20.jpg', 0)
 # img = cv2.imread('img/Prueba.jpg', 0)
 
 # Save img size (height, width)
@@ -35,7 +35,6 @@ plt.plot()
 plt.title('Edge detected')
 plt.imshow(img)
 plt.plot(edgePoints[:,0], edgePoints[:,1], '.w')
-# plt.plot(edgePoints[:,1], edgePoints[:,0], '.w')
 plt.show(block = False)
 
 # El ussuario selecciona los puntos de la img: los primeros dos definen la recta y el tercero el círculo
@@ -63,19 +62,43 @@ xh = np.linspace(0, width, width)
 yh = m * xh + b
 
 # Filter user selected points
-puntos_aux = filterSelectedPoints(edgePoints, xc, yc, r, m, b)
+auxPoints = filterSelectedPoints(edgePoints, xc, yc, r, m, b)
+print("auxPoints = {}".format(auxPoints))
+test = round(len(auxPoints)/2)
+print("test = {} len = {}".format(test, len(auxPoints)))
+
+plt.figure()
+plt.plot()
+plt.title('auxPoints')
+plt.imshow(img)
+plt.plot(auxPoints[:,0], auxPoints[:,1], '.b')
+plt.show(block=False)
+
+plt.figure()
+plt.plot()
+plt.title('auxPoints')
+plt.imshow(img)
+plt.plot(auxPoints[test,0], auxPoints[test,1], '.w')
+plt.plot(auxPoints[test+1,0], auxPoints[test+1,1], '.w')
+plt.show(block=False)
+
+
 
 # find nearest point between selected point by user and detected edge points
-p1 = findNearest(edgePoints, [xr[0], yr[0]])
-p2 = findNearest(edgePoints, [xr[1], yr[1]])
-p3 = findNearest(edgePoints, [xr[2], yr[2]])
-p4 = findNearest(edgePoints, [xr[3], yr[3]])
-p5 = findNearest(edgePoints, [xr[4], yr[4]])
+# p1 = findNearest(edgePoints, [xr[0], yr[0]])
+# p2 = findNearest(edgePoints, [xr[1], yr[1]])
+# p3 = findNearest(edgePoints, [xr[2], yr[2]])
+# p4 = findNearest(edgePoints, [auxPoints[0,3], auxPoints[1,3]])
+# p5 = findNearest(edgePoints, [auxPoints[0,3], auxPoints[1,3]])
+# p4 = findNearest(edgePoints, [xr[3], yr[3]])
+# p5 = findNearest(edgePoints, [xr[4], yr[4]])
 # p4 = findNearest(edgePoints, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
 # p5 = findNearest(edgePoints, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
-# p1 = findNearest(puntos_aux, [xr[0], yr[0]])
-# p2 = findNearest(puntos_aux, [xr[1], yr[1]])
-# p3 = findNearest(puntos_aux, [xr[2], yr[2]])
+p1 = findNearest(auxPoints, [xr[0], yr[0]])
+p2 = findNearest(auxPoints, [xr[1], yr[1]])
+p3 = findNearest(auxPoints, [xr[2], yr[2]])
+p4 = [auxPoints[test,0], auxPoints[test,1]]
+p5 = [auxPoints[test+1,0], auxPoints[test+1,1]]
 # p4 = findNearest(puntos_aux, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
 # p5 = findNearest(puntos_aux, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
 
