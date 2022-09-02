@@ -82,9 +82,6 @@ raices_xy = np.array([[raices[0], m * raices[0] + b2], [raices[1], m * raices[1]
 pi1 = [raices_xy[0,0], raices_xy[0,1]]
 pi2 = [raices_xy[1,0], raices_xy[1,1]]
 
-# Filter user selected points
-auxPoints = filterSelectedPoints(edgePoints, xc, yc, r, m, b)
-
 # find nearest point between selected point by user and detected edge points
 p1 = findNearest(edgePoints, [xr[0], yr[0]])
 p2 = findNearest(edgePoints, [xr[1], yr[1]])
