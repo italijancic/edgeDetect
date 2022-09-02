@@ -15,7 +15,8 @@ from filtersPoints import filterSelectedPoints
 
 # Load img from file
 img = cv2.imread('img/test.jpeg', 0)
-# img = cv2.imread('img/Angulo 20.jpg', 0)
+# img = cv2.imread('img/Angulo 30.jpg', 0)
+# img = cv2.imread('img/Angulo 170.jpg', 0)
 # img = cv2.imread('img/Prueba.jpg', 0)
 
 # Save img size (height, width)
@@ -61,46 +62,35 @@ print('y = %.3fx + %.3f' % (m, b))
 xh = np.linspace(0, width, width)
 yh = m * xh + b
 
+# Get new intersection between aprox circunference and desplazate horizontal line
+b2 = b - 0.5*(yr[0]-yr[2])
+print('\r\nAproximate higer horizontal line')
+print('y = %.3fx + %.3f' % (m, b2))
+yh2 = m*xh + b2
+
+# Calculate coef of polinomyal solve of cónica
+coefPol0 = xc*xc + b2*b2 + yc*yc - 2*b2*yc - r*r
+coefPol1 = 2*m*b2 - 2*xc - 2*m*yc
+coefPol2 = m*m + 1
+
+# Get intersection points between fitting conica and horizontal line
+raices = np.roots([coefPol2, coefPol1, coefPol0])
+
+# Calculate y coordenate for roots
+raices_xy = np.array([[raices[0], m * raices[0] + b2], [raices[1], m * raices[1] + b2]])
+
+pi1 = [raices_xy[0,0], raices_xy[0,1]]
+pi2 = [raices_xy[1,0], raices_xy[1,1]]
+
 # Filter user selected points
 auxPoints = filterSelectedPoints(edgePoints, xc, yc, r, m, b)
-print("auxPoints = {}".format(auxPoints))
-test = round(len(auxPoints)/2)
-print("test = {} len = {}".format(test, len(auxPoints)))
-
-plt.figure()
-plt.plot()
-plt.title('auxPoints')
-plt.imshow(img)
-plt.plot(auxPoints[:,0], auxPoints[:,1], '.b')
-plt.show(block=False)
-
-plt.figure()
-plt.plot()
-plt.title('auxPoints')
-plt.imshow(img)
-plt.plot(auxPoints[test,0], auxPoints[test,1], '.w')
-plt.plot(auxPoints[test+1,0], auxPoints[test+1,1], '.w')
-plt.show(block=False)
-
-
 
 # find nearest point between selected point by user and detected edge points
-# p1 = findNearest(edgePoints, [xr[0], yr[0]])
-# p2 = findNearest(edgePoints, [xr[1], yr[1]])
-# p3 = findNearest(edgePoints, [xr[2], yr[2]])
-# p4 = findNearest(edgePoints, [auxPoints[0,3], auxPoints[1,3]])
-# p5 = findNearest(edgePoints, [auxPoints[0,3], auxPoints[1,3]])
-# p4 = findNearest(edgePoints, [xr[3], yr[3]])
-# p5 = findNearest(edgePoints, [xr[4], yr[4]])
-# p4 = findNearest(edgePoints, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
-# p5 = findNearest(edgePoints, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
-p1 = findNearest(auxPoints, [xr[0], yr[0]])
-p2 = findNearest(auxPoints, [xr[1], yr[1]])
-p3 = findNearest(auxPoints, [xr[2], yr[2]])
-p4 = [auxPoints[test,0], auxPoints[test,1]]
-p5 = [auxPoints[test+1,0], auxPoints[test+1,1]]
-# p4 = findNearest(puntos_aux, [xr[0], yr[0] + 2/3 * (yr[2] - yr[0])])
-# p5 = findNearest(puntos_aux, [xr[1], yr[1] + 2/3 * (yr[2] - yr[1])])
+p1 = findNearest(edgePoints, [xr[0], yr[0]])
+p2 = findNearest(edgePoints, [xr[1], yr[1]])
+p3 = findNearest(edgePoints, [xr[2], yr[2]])
+p4 = findNearest(edgePoints, [raices_xy[0,0], raices_xy[0,1]])
+p5 = findNearest(edgePoints, [raices_xy[1,0], raices_xy[1,1]])
 
 print('\r\nNearest points')
 print('({}), ({}), ({}), ({}), ({})'.format(p1,p2,p3,p4,p5))
@@ -113,13 +103,13 @@ coefPol0 = b * b * C + b * E + F
 coefPol1 = b * B + D + 2 * b * C * m + E * m
 coefPol2 = A + B * m + C * m * m
 
-print("\r\ncoef_pol_0 = %.3f" % coefPol0)
-print("coef_pol_1 = %.3f" % coefPol1)
-print("coef_pol_2 = %.3f" % coefPol2)
+# print("\r\ncoef_pol_0 = %.3f" % coefPol0)
+# print("coef_pol_1 = %.3f" % coefPol1)
+# print("coef_pol_2 = %.3f" % coefPol2)
 
 # Get intersection points between fitting conica and horizontal line
 raices = np.roots([coefPol2, coefPol1, coefPol0])
-print('\r\nraices = {}'.format(raices))
+# print('\r\nraices = {}'.format(raices))
 
 # Calculate y coordenate for roots
 raices_xy = np.array([[raices[0], m * raices[0] + b], [raices[1], m * raices[1] + b]])
@@ -133,12 +123,6 @@ contactAngle1 = np.arctan(m1) * 180 / np.pi
 contactAngle2 = np.arctan(m2) * 180 / np.pi
 # Angle of horizontal line
 horizontalAngle = np.arctan(m) * 180 / np.pi
-
-print('\r\nResults -> Prev If:')
-print('----------')
-print("ThetaC: %.2f [degree]" % contactAngle1)
-print("ThetaC: %.2f [degree]" % contactAngle2)
-print("Horizontal Angle: %.1f [degree]" % horizontalAngle)
 
 # Compensate angle with horizontal line and fix quadrant change
 if ( contactAngle1 > 0 ):
@@ -165,17 +149,18 @@ ytg1 = m1 * (xh - raices_xy[0, 0]) + raices_xy[0, 1]
 ytg2 = m2 * (xh - raices_xy[1, 0]) + raices_xy[1, 1]
 
 # Círculo, debe ir primero para graficar
-# cv2.circle(img, (xc, yc) , int(r), (255, 0, 0), thickness = 1)
+cv2.circle(img, (xc, yc) , int(r), (255, 0, 0), thickness = 1)
 # Elipse, debe ir primero para graficar
 cv2.ellipse(img, e, (255,0,0), thickness = 1)
 # Matplotlib figure
 plt.figure()
 # Puntos del contorno ya filtrados
-# plt.scatter(filterX,filterY)
 # Puntos seleccionados
 plt.scatter(xr,yr)
 #Recta
 plt.plot(xh, yh)
+#Recta
+plt.plot(xh, yh2)
 # Recta tg 1
 plt.plot(xh, ytg1)
 # Recta tg 2
