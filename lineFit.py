@@ -11,7 +11,7 @@ def twoDotsLineFit(x, y):
 
     # Fit line to user selected points
 	m = (yf - yi) / (xf - xi)
-	b = yi - m * xi
+	b = yi + m * xi
 
 	return [m, b]
 

@@ -42,14 +42,14 @@ plt.show(block = False)
 print('-----------------')
 print('\r\nUser instructions')
 print('-----------------')
-print('1). Must select 5 points.')
+print('1). Must select 3 points.')
 print('2). First 2 points are used to fit horizontal line.')
-print('3). The rest three points are used, to fit a general conic to drop contour')
-print('4). At the end of selection proccess press <Space> key to continue.')
+print('3). At the end of selection proccess press <Space> key to continue.')
 xr, yr = getSelectedPoints(img)
 print('\r\nSelected Points: ({}, {}), ({}, {}),({}, {})'.format(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2]))
 
 # Fit circle, using user selected points
+
 data_cir = fitCircle(xr[0], yr[0],xr[1], yr[1], xr[2], yr[2])
 # Here we can use other fit function
 xc, yc, r = data_cir
@@ -64,7 +64,7 @@ yh = m * xh + b
 
 # Get new intersection between aprox circunference and desplazate horizontal line
 b2 = b - 0.5*(yr[0]-yr[2])
-print('\r\nAproximate higer horizontal line')
+print('\r\nAproximate higher horizontal line')
 print('y = %.3fx + %.3f' % (m, b2))
 yh2 = m*xh + b2
 
@@ -99,10 +99,6 @@ print('a, b, c, d, e, f = ', A, B, C, D, E, F)
 coefPol0 = b * b * C + b * E + F
 coefPol1 = b * B + D + 2 * b * C * m + E * m
 coefPol2 = A + B * m + C * m * m
-
-# print("\r\ncoef_pol_0 = %.3f" % coefPol0)
-# print("coef_pol_1 = %.3f" % coefPol1)
-# print("coef_pol_2 = %.3f" % coefPol2)
 
 # Get intersection points between fitting conica and horizontal line
 raices = np.roots([coefPol2, coefPol1, coefPol0])
